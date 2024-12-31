@@ -1,6 +1,6 @@
 {
-  "watch": ["index.js", "routes", "services", "middlewares", "schemas"],
+  "watch": ["./api/**/*.js", "./api/**/*.json", "./api/**/*.env"],
   "ext": "js,json,env",
   "ignore": [".git", "node_modules"],
-  "exec": "node index.js"
+  "exec": "node api/index.js"
 }

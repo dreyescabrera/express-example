@@ -1,18 +1,18 @@
-import express from 'express'
-import cors from 'cors'
-import routerApi from './routes/index.js'
-import {
+const express = require('express')
+const cors = require('cors')
+const routerApi = require('./routes/index.js')
+const {
   logErrors,
   errorHandler,
   boomErrorHandler
-} from './middlewares/error.handler.js'
+} = require('./middlewares/error.handler.js')
 
 const app = express()
-const port = process.env.PORT || 3000
+const port = 3000
 
 app.use(express.json())
 
-const whitelist = ['http://localhost:8080', 'https://myapp.co']
+const whitelist = ['http://localhost:3000', 'https://myapp.co']
 
 const options = {
   origin: (origin, callback) => {
@@ -42,3 +42,5 @@ app.use(errorHandler)
 app.listen(port, () => {
   console.log('Mi port' + port)
 })
+
+module.exports = app

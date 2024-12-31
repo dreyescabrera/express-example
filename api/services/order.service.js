@@ -1,5 +1,6 @@
-class CategoryService {
+class OrderService {
   constructor() {}
+
   async create(data) {
     return data
   }
@@ -24,4 +25,4 @@ class CategoryService {
   }
 }
 
-export default CategoryService
+module.exports = OrderService

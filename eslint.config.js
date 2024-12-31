@@ -26,9 +26,6 @@ export default [
       promise: promisePlugin
     },
     rules: {
-      // Import rules
-      'import/no-commonjs': 'error',
-
       // Promise rules
       'promise/always-return': 'error',
       'promise/no-return-wrap': 'error',

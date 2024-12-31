@@ -1,11 +1,11 @@
-import express from 'express'
-import ProductsService from './../services/product.service.js'
-import {
+const express = require('express')
+const ProductsService = require('./../services/product.service.js')
+const {
   createProductSchema,
   updateProductSchema,
   getProductSchema
-} from './../schemas/product.schema.js'
-import { validatorHandler } from './../middlewares/validator.handler.js'
+} = require('./../schemas/product.schema.js')
+const { validatorHandler } = require('./../middlewares/validator.handler.js')
 
 const router = express.Router()
 const service = new ProductsService()
@@ -77,4 +77,4 @@ router.delete(
   }
 )
 
-export default router
+module.exports = router

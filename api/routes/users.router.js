@@ -1,11 +1,11 @@
-import express from 'express'
-import UserService from './../services/user.service.js'
-import {
+const express = require('express')
+const UserService = require('./../services/user.service.js')
+const {
   updateUserSchema,
   createUserSchema,
   getUserSchema
-} from './../schemas/user.schema.js'
-import { validatorHandler } from './../middlewares/validator.handler.js'
+} = require('./../schemas/user.schema.js')
+const { validatorHandler } = require('./../middlewares/validator.handler.js')
 
 const router = express.Router()
 const service = new UserService()
@@ -77,4 +77,4 @@ router.delete(
   }
 )
 
-export default router
+module.exports = router
