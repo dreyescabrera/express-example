@@ -1,32 +1,27 @@
-const boom = require('@hapi/boom');
-
 class CategoryService {
-
-  constructor(){
-  }
+  constructor() {}
   async create(data) {
-    return data;
+    return data
   }
 
   async find() {
-    return [];
+    return []
   }
 
   async findOne(id) {
-    return { id };
+    return { id }
   }
 
   async update(id, changes) {
     return {
       id,
-      changes,
-    };
+      changes
+    }
   }
 
   async delete(id) {
-    return { id };
+    return { id }
   }
-
 }
 
-module.exports = CategoryService;
+export default CategoryService

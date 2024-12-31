@@ -1,31 +1,32 @@
 {
   "name": "my-store",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "packageManager": "pnpm@9.14.4+sha512.c8180b3fbe4e4bca02c94234717896b5529740a6cbadf19fa78254270403ea2f27d4e1d46a08a0f56c89b63dc8ebfd3ee53326da720273794e6200fcf0d184ab",
+  "type": "module",
   "scripts": {
-    "dev": "nodemon index.js",
     "start": "node index.js",
-    "lint": "eslint"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "eslint": "^7.32.0",
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-prettier": "^3.4.1",
-    "nodemon": "^2.0.12",
-    "prettier": "^2.3.2"
+    "dev": "nodemon"
   },
   "dependencies": {
     "@faker-js/faker": "^7.6.0",
     "@hapi/boom": "^9.1.4",
     "cors": "^2.8.5",
-    "express": "^4.17.1",
-    "joi": "^17.4.2"
+    "express": "^4.21.2",
+    "joi": "^17.13.3"
+  },
+  "devDependencies": {
+    "eslint": "^9.17.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-import-resolver-typescript": "^3.7.0",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^5.2.1",
+    "eslint-plugin-promise": "^7.2.1",
+    "eslint-plugin-security": "^3.0.1",
+    "nodemon": "^3.1.9",
+    "prettier": "^3.4.2"
   },
   "engines": {
-    "node": "14.x"
+    "node": "22.x"
   }
 }

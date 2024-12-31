@@ -1,0 +1,6 @@
+{
+  "watch": ["index.js", "routes", "services", "middlewares", "schemas"],
+  "ext": "js,json,env",
+  "ignore": [".git", "node_modules"],
+  "exec": "node index.js"
+}
