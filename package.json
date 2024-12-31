@@ -6,7 +6,9 @@
     "start": "node api/index.js",
     "dev": "nodemon",
     "deploy": "vercel",
-    "dev:vercel": "vercel dev --listen 3001"
+    "dev:vercel": "vercel dev --listen 3001",
+    "postgres:up": "docker compose up -d postgres",
+    "pgadmin:up": "docker compose up -d pgadmin"
   },
   "dependencies": {
     "@faker-js/faker": "^7.6.0",
