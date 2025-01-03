@@ -4,7 +4,8 @@ const routerApi = require('./routes/index.js')
 const {
   logErrors,
   errorHandler,
-  boomErrorHandler
+  boomErrorHandler,
+  sequelizeErrorHandler
 } = require('./middlewares/error.handler.js')
 
 const app = express()
@@ -37,10 +38,11 @@ routerApi(app)
 
 app.use(logErrors)
 app.use(boomErrorHandler)
+app.use(sequelizeErrorHandler)
 app.use(errorHandler)
 
 app.listen(port, () => {
-  console.log('Mi port' + port)
+  console.log('Local: ' + `http://localhost:${port}`)
 })
 
 module.exports = app

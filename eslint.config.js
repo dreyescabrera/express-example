@@ -1,11 +1,11 @@
-import eslint from '@eslint/js'
-import prettier from 'eslint-config-prettier'
-import importPlugin from 'eslint-plugin-import'
-import securityPlugin from 'eslint-plugin-security'
-import promisePlugin from 'eslint-plugin-promise'
+const eslint = require('@eslint/js')
+const prettier = require('eslint-config-prettier')
+const importPlugin = require('eslint-plugin-import')
+const securityPlugin = require('eslint-plugin-security')
+const promisePlugin = require('eslint-plugin-promise')
 
 /** @type {import("eslint").Linter.Config} */
-export default [
+module.exports = [
   eslint.configs.recommended,
   importPlugin.flatConfigs.recommended,
   {
@@ -21,6 +21,7 @@ export default [
         module: 'readonly'
       }
     },
+    ignores: ['node_modules', 'dist', '.vercel'],
     plugins: {
       security: securityPlugin,
       promise: promisePlugin
