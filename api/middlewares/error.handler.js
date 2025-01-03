@@ -1,12 +1,12 @@
 const { ValidationError: SequelizeValidationError } = require('sequelize')
 
 function logErrors(err, req, res, next) {
-  console.error(err)
+  // console.error(err)
   next(err)
 }
 
 /** @type {import('express').ErrorRequestHandler} */
-function errorHandler(err, req, res) {
+function errorHandler(err, _req, res, _next) {
   res.status(500).json({
     message: err.message,
     stack: err.stack
@@ -14,7 +14,7 @@ function errorHandler(err, req, res) {
 }
 
 /** @type {import('express').ErrorRequestHandler} */
-function boomErrorHandler(err, req, res, next) {
+function boomErrorHandler(err, _req, res, next) {
   const isError = err.isBoom
   if (!isError) return next(err)
 
@@ -23,7 +23,7 @@ function boomErrorHandler(err, req, res, next) {
 }
 
 /** @type {import('express').ErrorRequestHandler} */
-function sequelizeErrorHandler(err, req, res, next) {
+function sequelizeErrorHandler(err, _req, res, next) {
   const isError = err instanceof SequelizeValidationError
   if (!isError) return next(err)
 

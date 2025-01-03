@@ -8,7 +8,10 @@
     "deploy": "vercel",
     "dev:vercel": "vercel dev --listen 3001",
     "postgres:up": "docker compose up -d postgres",
-    "pgadmin:up": "docker compose up -d pgadmin"
+    "pgadmin:up": "docker compose up -d pgadmin",
+    "migrations:generate": "sequelize-cli migration:generate --name",
+    "migrations:run": "sequelize-cli db:migrate",
+    "migrations:undo": "sequelize-cli db:migrate:undo"
   },
   "dependencies": {
     "@faker-js/faker": "^7.6.0",
@@ -33,6 +36,7 @@
     "eslint-plugin-security": "^3.0.1",
     "nodemon": "^3.1.9",
     "prettier": "^3.4.2",
+    "sequelize-cli": "^6.6.2",
     "typescript": "^5.7.2",
     "vercel": "^39.2.2"
   }
