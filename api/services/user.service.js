@@ -15,12 +15,16 @@ class UserService {
   }
 
   async find() {
-    const rows = await this.#users.findAll()
+    const rows = await this.#users.findAll({
+      include: [User.customerRelation]
+    })
     return rows
   }
 
   async findOne(id) {
-    const user = await this.#findUserById(id)
+    const user = await this.#findUserById(id, {
+      include: [User.customerRelation]
+    })
     return user
   }
 
@@ -36,8 +40,10 @@ class UserService {
     return { id }
   }
 
-  async #findUserById(id) {
-    const user = await this.#users.findByPk(id)
+  async #findUserById(id, { include }) {
+    const user = await this.#users.findByPk(id, {
+      include
+    })
     if (!user) {
       throw boom.notFound('user not found')
     }

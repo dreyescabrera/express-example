@@ -10,17 +10,23 @@ class CustomerService {
   }
 
   async create(data) {
-    const newCustomer = await this.#customers.create(data)
+    const newCustomer = await this.#customers.create(data, {
+      include: [Customer.userRelation]
+    })
     return newCustomer
   }
 
   async find() {
-    const rows = await this.#customers.findAll()
+    const rows = await this.#customers.findAll({
+      include: [Customer.userRelation]
+    })
     return rows
   }
 
   async findOne(id) {
-    const customer = await this.#findCustomerById(id)
+    const customer = await this.#findCustomerById(id, {
+      include: [Customer.userRelation]
+    })
     return customer
   }
 
@@ -36,8 +42,10 @@ class CustomerService {
     return { id }
   }
 
-  async #findCustomerById(id) {
-    const customer = await this.#customers.findByPk(id)
+  async #findCustomerById(id, { include }) {
+    const customer = await this.#customers.findByPk(id, {
+      include
+    })
     if (!customer) {
       throw boom.notFound('customer not found')
     }

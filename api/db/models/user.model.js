@@ -1,4 +1,8 @@
 const { Model, DataTypes, Sequelize } = require('sequelize')
+const CreatedAtAttribute = require('./shared-attributes/created-at.attribute')
+const ModelNames = require('../constants/model-names.js')
+const TableNames = require('../constants/table-names.js')
+const RelationNames = require('../constants/relation-names.js')
 
 /** @type {import('sequelize').ModelAttributes} */
 const UserSchema = {
@@ -22,11 +26,7 @@ const UserSchema = {
     allowNull: false,
     defaultValue: 'customer'
   },
-  createdAt: {
-    type: DataTypes.DATE,
-    allowNull: false,
-    defaultValue: Sequelize.fn('NOW')
-  },
+  createdAt: CreatedAtAttribute,
   updatedAt: {
     type: DataTypes.DATE,
     allowNull: false,
@@ -35,23 +35,22 @@ const UserSchema = {
 }
 
 class User extends Model {
-  static tableName = 'users'
-  static modelName = 'User'
+  static tableName = TableNames.User
+  static modelName = ModelNames.User
+  static customerRelation = RelationNames.User.customer
 
   static associate(models) {
-    User.belongsToMany(models.Product, {
-      as: 'products',
-      through: 'user_products',
-      foreignKey: 'userId',
-      otherKey: 'productId'
+    this.hasOne(models[ModelNames.Customer], {
+      as: this.customerRelation,
+      foreignKey: 'userId'
     })
   }
 
   static config(sequelize) {
     return {
       sequelize,
-      tableName: User.tableName,
-      modelName: User.modelName,
+      tableName: this.tableName,
+      modelName: this.modelName,
       timestamps: false
     }
   }
