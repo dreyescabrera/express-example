@@ -3,13 +3,18 @@ const RelationNames = {
     customer: 'customer'
   },
   Customer: {
-    user: 'user'
+    user: 'user',
+    order: 'orders'
   },
   Category: {
     product: 'products'
   },
   Product: {
     category: 'category'
+  },
+  Order: {
+    customer: 'customer',
+    product: 'items'
   }
 }
 

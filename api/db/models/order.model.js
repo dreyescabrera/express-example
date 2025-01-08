@@ -1,60 +1,56 @@
 const { Model, DataTypes } = require('sequelize')
-const { User } = require('./user.model')
 const CreatedAtAttribute = require('./shared-attributes/created-at.attribute')
 const ModelNames = require('../constants/model-names.js')
 const TableNames = require('../constants/table-names.js')
 const RelationNames = require('../constants/relation-names.js')
 
 /** @type {import('sequelize').ModelAttributes} */
-const CustomerSchema = {
+const OrderSchema = {
   id: {
     allowNull: false,
     autoIncrement: true,
     primaryKey: true,
     type: DataTypes.INTEGER
   },
-  firstName: {
-    type: DataTypes.STRING,
+  customerId: {
+    field: 'customer_id',
     allowNull: false,
-    field: 'first_name'
-  },
-  lastName: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    field: 'last_name'
-  },
-  phone: {
-    type: DataTypes.STRING,
-    allowNull: false
-  },
-  userId: {
     type: DataTypes.INTEGER,
-    allowNull: false,
-    unique: true,
     references: {
-      model: User.tableName,
+      model: TableNames.Customer,
       key: 'id'
     },
-    field: 'user_id',
     onUpdate: 'CASCADE',
     onDelete: 'SET NULL'
+  },
+  total: {
+    type: DataTypes.VIRTUAL,
+    get() {
+      return this[Order.productRelation].reduce(
+        (acc, item) => acc + item.price * item.OrderProduct.amount,
+        0
+      )
+    }
   },
   createdAt: CreatedAtAttribute
 }
 
-class Customer extends Model {
-  static tableName = TableNames.Customer
-  static modelName = ModelNames.Customer
-  static userRelation = RelationNames.Customer.user
-  static orderRelation = RelationNames.Customer.order
+class Order extends Model {
+  static tableName = TableNames.Order
+  static modelName = ModelNames.Order
+  static customerRelation = RelationNames.Order.customer
+  static productRelation = RelationNames.Order.product
 
   static associate(models) {
-    this.belongsTo(models[ModelNames.User], {
-      as: this.userRelation
+    this.belongsTo(models[ModelNames.Customer], {
+      as: this.customerRelation
     })
-    this.hasMany(models[ModelNames.Order], {
-      as: this.orderRelation,
-      foreignKey: 'customerId'
+
+    this.belongsToMany(models[ModelNames.Product], {
+      as: this.productRelation,
+      through: models[ModelNames.OrderProduct],
+      foreignKey: 'orderId',
+      otherKey: 'productId'
     })
   }
 
@@ -69,6 +65,6 @@ class Customer extends Model {
 }
 
 module.exports = {
-  CustomerSchema,
-  Customer
+  OrderSchema,
+  Order
 }
