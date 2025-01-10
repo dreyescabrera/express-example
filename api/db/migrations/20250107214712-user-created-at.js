@@ -3,7 +3,11 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface) {
-    await queryInterface.renameColumn('users', 'createdAt', 'created_at')
+    const columns = await queryInterface.describeTable('users')
+
+    if (columns.createdAt) {
+      await queryInterface.renameColumn('users', 'createdAt', 'created_at')
+    }
   },
 
   async down(queryInterface) {

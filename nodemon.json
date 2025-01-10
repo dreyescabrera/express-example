@@ -1,4 +1,5 @@
 {
+  "$schema": "https://json.schemastore.org/nodemon.json",
   "watch": ["./api/**/*.js", "./api/**/*.json", "./api/**/*.env"],
   "ext": "js,json,env",
   "ignore": [".git", "node_modules"],

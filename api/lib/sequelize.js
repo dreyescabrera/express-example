@@ -1,14 +1,12 @@
+const pg = require('pg')
 const { Sequelize } = require('sequelize')
 const setupModels = require('./../db/models/index.js')
 const ENVIRONMENT = require('./../config/environment.js')
 
-const USER = ENVIRONMENT.DB_USER
-const PASSWORD = ENVIRONMENT.DB_PASSWORD
-
-const URI = `postgres://${USER}:${PASSWORD}@${ENVIRONMENT.DB_HOST}:${ENVIRONMENT.DB_PORT}/${ENVIRONMENT.DB_NAME}`
-
-const sequelize = new Sequelize(URI, {
-  dialect: 'postgres'
+const sequelize = new Sequelize(ENVIRONMENT.DB_URL, {
+  dialect: 'postgres',
+  dialectModule: ENVIRONMENT.IS_PROD ? pg : undefined,
+  logging: ENVIRONMENT.IS_PROD ? false : console.log
 })
 
 setupModels(sequelize)

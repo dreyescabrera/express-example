@@ -1,10 +1,15 @@
 const dotenv = require('dotenv')
+const dotenvExpand = require('dotenv-expand')
 
-dotenv.config()
+const env = dotenv.config()
+dotenvExpand.expand(env)
 
 const processEnv = process.env
 
 const ENVIRONMENT = {
+  MODE: processEnv.NODE_ENV ?? 'dev',
+  IS_PROD: ['production', 'prod'].includes(processEnv.NODE_ENV),
+  DB_URL: processEnv.DB_DATABASE_URL,
   DB_HOST: processEnv.PG_HOST,
   DB_NAME: processEnv.PG_DB,
   DB_USER: processEnv.PG_USER,
