@@ -26,7 +26,10 @@ const OrderSchema = {
   total: {
     type: DataTypes.VIRTUAL,
     get() {
-      return this[Order.productRelation].reduce(
+      const products = this[Order.productRelation]
+      if (!products || products.length === 0) return 0
+
+      return products.reduce(
         (acc, item) => acc + item.price * item.OrderProduct.amount,
         0
       )
