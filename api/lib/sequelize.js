@@ -1,7 +1,7 @@
 const pg = require('pg')
 const { Sequelize } = require('sequelize')
 const setupModels = require('./../db/models/index.js')
-const ENVIRONMENT = require('./../config/environment.js')
+const { ENVIRONMENT } = require('./../config/environment.js')
 
 const sequelize = new Sequelize(ENVIRONMENT.DB_URL, {
   dialect: 'postgres',

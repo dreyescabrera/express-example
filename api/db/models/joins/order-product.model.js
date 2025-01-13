@@ -41,7 +41,7 @@ class OrderProduct extends Model {
   static tableName = TableNames.OrderProduct
   static modelName = ModelNames.OrderProduct
 
-  static associate(models) {
+  static associate(_models) {
     // this.belongsTo(models.Order, {
     //   foreignKey: 'orderId'
     // })

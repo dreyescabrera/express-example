@@ -5,8 +5,10 @@ const {
   logErrors,
   errorHandler,
   boomErrorHandler,
+  notFoundHandler,
   sequelizeErrorHandler
 } = require('./middlewares/error.handler.js')
+const PassportHelper = require('./helpers/passport.helper.js')
 
 const app = express()
 const port = 3000
@@ -24,7 +26,10 @@ const options = {
     }
   }
 }
+
 app.use(cors(options))
+PassportHelper.init(app)
+PassportHelper.initStrategies()
 
 app.get('/', (req, res) => {
   res.send('Hola mi server en express')
@@ -36,6 +41,7 @@ app.get('/nueva-ruta', (req, res) => {
 
 routerApi(app)
 
+app.use(notFoundHandler)
 app.use(logErrors)
 app.use(boomErrorHandler)
 app.use(sequelizeErrorHandler)

@@ -6,6 +6,7 @@ const {
 } = require('./../schemas/category.schema.js')
 const CategoryService = require('./../services/category.service.js')
 const { validatorHandler } = require('./../middlewares/validator.handler.js')
+const PassportHelper = require('../helpers/passport.helper')
 
 const router = express.Router()
 const service = new CategoryService()
@@ -35,6 +36,7 @@ router.get(
 
 router.post(
   '/',
+  PassportHelper.authenticate('jwt'),
   validatorHandler(createCategorySchema, 'body'),
   async (req, res, next) => {
     try {

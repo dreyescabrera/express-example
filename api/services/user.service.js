@@ -1,5 +1,6 @@
 const boom = require('@hapi/boom')
 const sequelize = require('../lib/sequelize')
+const CryptoHelper = require('../helpers/crypto.helper')
 const { User } = require('../db/models/user.model')
 
 class UserService {
@@ -10,7 +11,9 @@ class UserService {
   }
 
   async create(data) {
-    const newUser = await this.#users.create(data)
+    const hashedUser = await CryptoHelper.getHashedUser(data)
+    const newUser = await this.#users.create(hashedUser)
+    this.removePassword(newUser)
     return newUser
   }
 
@@ -18,6 +21,7 @@ class UserService {
     const rows = await this.#users.findAll({
       include: [User.customerRelation]
     })
+    rows.forEach(this.removePassword)
     return rows
   }
 
@@ -25,12 +29,22 @@ class UserService {
     const user = await this.#findUserById(id, {
       include: [User.customerRelation]
     })
+    this.removePassword(user)
+    return user
+  }
+
+  async findByEmail(email) {
+    const user = await this.#users.findOne({
+      where: { email }
+    })
+    this.#validateUser(user)
     return user
   }
 
   async update(id, changes) {
     const user = await this.#findUserById(id)
     const updatedUser = await user.update(changes)
+    this.removePassword(updatedUser)
     return updatedUser
   }
 
@@ -40,14 +54,23 @@ class UserService {
     return { id }
   }
 
+  removePassword(user) {
+    delete user.dataValues.password
+    return user
+  }
+
   async #findUserById(id, { include }) {
     const user = await this.#users.findByPk(id, {
       include
     })
+    this.#validateUser(user)
+    return user
+  }
+
+  #validateUser(user) {
     if (!user) {
       throw boom.notFound('user not found')
     }
-    return user
   }
 }
 

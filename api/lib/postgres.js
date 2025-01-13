@@ -1,5 +1,5 @@
 const { Pool } = require('pg')
-const ENVIRONMENT = require('./../config/environment.js')
+const { ENVIRONMENT } = require('./../config/environment.js')
 
 const USER = ENVIRONMENT.DB_USER
 const PASSWORD = ENVIRONMENT.DB_PASSWORD

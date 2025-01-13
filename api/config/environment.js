@@ -14,7 +14,11 @@ const ENVIRONMENT = {
   DB_NAME: processEnv.PG_DB,
   DB_USER: processEnv.PG_USER,
   DB_PASSWORD: processEnv.PG_PASS,
-  DB_PORT: processEnv.PG_PORT
+  DB_PORT: processEnv.PG_PORT,
+  GMAIL_USER: processEnv.GMAIL_USER,
+  GMAIL_PASSWORD: processEnv.GMAIL_PASS
 }
 
-module.exports = ENVIRONMENT
+const JWT_SECRET_KEY = processEnv.JWT_SECRET_KEY
+
+module.exports = { ENVIRONMENT, JWT_SECRET_KEY }

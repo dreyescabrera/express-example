@@ -3,6 +3,9 @@ const sequelize = require('../lib/sequelize')
 const { Order } = require('../db/models/order.model')
 const { Customer } = require('../db/models/customer.model')
 const { OrderProduct } = require('../db/models/joins/order-product.model')
+const CustomerService = require('./customer.service')
+
+const customerService = new CustomerService()
 
 class OrderService {
   #orders
@@ -13,8 +16,11 @@ class OrderService {
     this.#orderProducts = sequelize.models[OrderProduct.modelName]
   }
 
-  async create(data) {
-    const newOrder = await this.#orders.create(data)
+  async create(userId) {
+    const customer = await customerService.findByUserId(userId)
+    const newOrder = await this.#orders.create({
+      customerId: customer.id
+    })
     return newOrder
   }
 
@@ -25,6 +31,16 @@ class OrderService {
 
   async find() {
     const rows = await this.#orders.findAll()
+    return rows
+  }
+
+  async findByUserId(userId) {
+    const rows = await this.#orders.findAll({
+      where: {
+        '$customer.user_id$': userId
+      },
+      include: [Order.customerRelation, Order.productRelation]
+    })
     return rows
   }
 

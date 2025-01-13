@@ -1,6 +1,7 @@
-const sequelize = require('../lib/sequelize')
-const { Customer } = require('../db/models/customer.model')
 const boom = require('@hapi/boom')
+const sequelize = require('../lib/sequelize')
+const CryptoHelper = require('../helpers/crypto.helper')
+const { Customer } = require('../db/models/customer.model')
 
 class CustomerService {
   #customers
@@ -10,9 +11,13 @@ class CustomerService {
   }
 
   async create(data) {
+    const hashedUser = await CryptoHelper.getHashedUser(data.user)
+    data.user = hashedUser
+
     const newCustomer = await this.#customers.create(data, {
       include: [Customer.userRelation]
     })
+    this.#removeCustomerPassword(newCustomer)
     return newCustomer
   }
 
@@ -20,6 +25,7 @@ class CustomerService {
     const rows = await this.#customers.findAll({
       include: [Customer.userRelation]
     })
+    rows.forEach(this.#removeCustomerPassword)
     return rows
   }
 
@@ -27,12 +33,23 @@ class CustomerService {
     const customer = await this.#findCustomerById(id, {
       include: [Customer.userRelation]
     })
+    this.#removeCustomerPassword(customer)
+    return customer
+  }
+
+  async findByUserId(userId) {
+    const customer = await this.#customers.findOne({
+      where: {
+        userId
+      }
+    })
     return customer
   }
 
   async update(id, changes) {
     const customer = await this.#findCustomerById(id)
     const updatedCustomer = await customer.update(changes)
+    this.#removeCustomerPassword(updatedCustomer)
     return updatedCustomer
   }
 
@@ -49,6 +66,11 @@ class CustomerService {
     if (!customer) {
       throw boom.notFound('customer not found')
     }
+    return customer
+  }
+
+  #removeCustomerPassword(customer) {
+    delete customer.dataValues.user.dataValues.password
     return customer
   }
 }

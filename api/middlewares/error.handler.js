@@ -5,6 +5,14 @@ function logErrors(err, req, res, next) {
   next(err)
 }
 
+/** @type {import('express').RequestHandler} */
+function notFoundHandler(req, res) {
+  res.status(404).json({
+    error: 'Not Found',
+    message: `Cannot ${req.method} ${req.originalUrl}`
+  })
+}
+
 /** @type {import('express').ErrorRequestHandler} */
 function errorHandler(err, _req, res, _next) {
   res.status(500).json({
@@ -35,5 +43,6 @@ module.exports = {
   logErrors,
   errorHandler,
   boomErrorHandler,
-  sequelizeErrorHandler
+  sequelizeErrorHandler,
+  notFoundHandler
 }
