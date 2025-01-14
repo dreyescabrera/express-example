@@ -24,7 +24,7 @@ const LocalStrategy = new Strategy(
       )
       if (!isMatch) return reject(done)
 
-      userService.removePassword(user)
+      userService.removeSensitiveData(user)
 
       done(null, user)
     } catch (error) {

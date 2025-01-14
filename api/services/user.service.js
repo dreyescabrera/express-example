@@ -13,7 +13,7 @@ class UserService {
   async create(data) {
     const hashedUser = await CryptoHelper.getHashedUser(data)
     const newUser = await this.#users.create(hashedUser)
-    this.removePassword(newUser)
+    this.removeSensitiveData(newUser)
     return newUser
   }
 
@@ -21,15 +21,20 @@ class UserService {
     const rows = await this.#users.findAll({
       include: [User.customerRelation]
     })
-    rows.forEach(this.removePassword)
+    rows.forEach(this.removeSensitiveData)
     return rows
   }
 
-  async findOne(id) {
+  async findOneWithSensitiveData(id) {
     const user = await this.#findUserById(id, {
       include: [User.customerRelation]
     })
-    this.removePassword(user)
+    return user
+  }
+
+  async findOne(id) {
+    const user = await this.findOneWithSensitiveData(id)
+    this.removeSensitiveData(user)
     return user
   }
 
@@ -44,7 +49,7 @@ class UserService {
   async update(id, changes) {
     const user = await this.#findUserById(id)
     const updatedUser = await user.update(changes)
-    this.removePassword(updatedUser)
+    this.removeSensitiveData(updatedUser)
     return updatedUser
   }
 
@@ -54,12 +59,13 @@ class UserService {
     return { id }
   }
 
-  removePassword(user) {
+  removeSensitiveData(user) {
     delete user.dataValues.password
+    delete user.dataValues.recoveryToken
     return user
   }
 
-  async #findUserById(id, { include }) {
+  async #findUserById(id, { include } = {}) {
     const user = await this.#users.findByPk(id, {
       include
     })

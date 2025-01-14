@@ -26,6 +26,10 @@ const UserSchema = {
     allowNull: false,
     defaultValue: 'customer'
   },
+  recoveryToken: {
+    type: DataTypes.STRING,
+    allowNull: true
+  },
   createdAt: CreatedAtAttribute,
   updatedAt: {
     type: DataTypes.DATE,
